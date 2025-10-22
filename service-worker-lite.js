@@ -1,9 +1,10 @@
-// 🧩 SRM-QK v1.1.3 — Service Worker Lite
-// Crea cache local para uso offline y carga más rápida en presentaciones
+// 🧩 SRM-QK v1.1.4 — Service Worker Media-Enhanced
+// Cachea HTML, íconos y ahora también videos (modo offline optimizado)
 
-const CACHE_NAME = "srm-qk-cache-v1.1.3";
+const CACHE_NAME = "srm-qk-cache-v1.1.4";
+const MEDIA_CACHE = "srm-qk-media-cache-v1.1.4";
 
-const ASSETS_TO_CACHE = [
+const STATIC_ASSETS = [
   "/srm-frontend-qk/",
   "/srm-frontend-qk/index.html",
   "/QK/favicon.ico",
@@ -15,46 +16,87 @@ const ASSETS_TO_CACHE = [
   "/QK/site.webmanifest"
 ];
 
-// Instalación inicial del Service Worker
+// 🧱 Instalar: cachear archivos estáticos
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(ASSETS_TO_CACHE))
+      .then(cache => cache.addAll(STATIC_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
-// Activación: limpia versiones antiguas de cache
+// ♻️ Activar: limpiar versiones viejas
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.map((key) => {
-        if (key !== CACHE_NAME) return caches.delete(key);
-      }))
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME && key !== MEDIA_CACHE) {
+            return caches.delete(key);
+          }
+        })
+      )
     ).then(() => self.clients.claim())
   );
 });
 
-// Estrategia de cache con fallback a red
+// ⚡ Fetch: estrategia híbrida
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  // Ignora peticiones a la API o videos (se obtienen siempre online)
-  if (url.origin.includes("onrender.com") || url.pathname.endsWith(".mp4")) return;
+  // 1️⃣ Ignorar llamadas a la API del backend (se hacen siempre online)
+  if (url.pathname.startsWith("/api/")) return;
 
+  // 2️⃣ Videos MP4 → cache temporal especial
+  if (url.origin.includes("onrender.com") && url.pathname.endsWith(".mp4")) {
+    event.respondWith(cacheVideo(event.request));
+    return;
+  }
+
+  // 3️⃣ Otros recursos → cache first con fallback
   event.respondWith(
     caches.match(event.request)
       .then((cached) => cached || fetch(event.request)
         .then((response) => {
-          // Cachea nuevas peticiones de forma ligera
           if (response && response.status === 200 && response.type === "basic") {
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
+            const cloned = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, cloned));
           }
           return response;
         })
-        .catch(() => caches.match("/srm-frontend-qk/index.html")))
+        .catch(() => caches.match("/srm-frontend-qk/index.html"))
+      )
   );
 });
+
+// 🎞️ Función: cachear videos de Render inteligentemente
+async function cacheVideo(request) {
+  const cache = await caches.open(MEDIA_CACHE);
+  const cachedResponse = await cache.match(request);
+
+  // Si ya está cacheado, úsalo
+  if (cachedResponse) return cachedResponse;
+
+  try {
+    const fetchResponse = await fetch(request);
+    // Guardar copia solo si la respuesta es correcta
+    if (fetchResponse.ok) {
+      cache.put(request, fetchResponse.clone());
+      limitMediaCacheSize(MEDIA_CACHE, 8); // máximo 8 videos guardados
+    }
+    return fetchResponse;
+  } catch (error) {
+    console.warn("⚠️ Video no disponible offline:", request.url);
+    return cachedResponse || new Response("Video no disponible offline", { status: 503 });
+  }
+}
+
+// 🧹 Mantener cache de videos limitada
+async function limitMediaCacheSize(name, maxItems) {
+  const cache = await caches.open(name);
+  const keys = await cache.keys();
+  if (keys.length > maxItems) {
+    await cache.delete(keys[0]);
+    limitMediaCacheSize(name, maxItems);
+  }
+}

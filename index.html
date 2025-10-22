@@ -39,11 +39,14 @@
       justify-content: center;
       height: 100vh;
     }
+
     video {
       width: 100%;
       height: 100vh;
       object-fit: cover;
+      display: none;
     }
+
     #questionnaire {
       display: none;
       padding: 20px;
@@ -51,6 +54,7 @@
       background: rgba(0, 0, 0, 0.85);
       border-radius: 10px;
     }
+
     button {
       margin: 10px;
       padding: 10px 20px;
@@ -62,9 +66,11 @@
       font-size: 1em;
       transition: background 0.3s;
     }
+
     button:hover {
       background-color: #ff8533;
     }
+
     #startBtn {
       position: absolute;
       z-index: 2;
@@ -141,29 +147,28 @@
           questionnaire.style.display = "block";
           return;
         }
+
         videoPlayer.src = videos[index];
         videoPlayer.load();
         videoPlayer.play().catch(() => {});
+        console.log("🎥 Reproduciendo video", index + 1, videos[index]);
       };
 
-      videoPlayer.addEventListener("loadeddata", () => {
-        if (currentVideo === 0 && videoPlayer.paused) {
-          videoPlayer.play();
-        }
-      });
-
+      // ✅ Avanzar al siguiente video solo con 'ended'
       videoPlayer.addEventListener("ended", () => {
         currentVideo++;
         playVideo(currentVideo);
       });
 
+      // ✅ Iniciar desde el primer video manualmente
       startBtn.addEventListener("click", () => {
         startBtn.style.display = "none";
         videoPlayer.style.display = "block";
+        currentVideo = 0;
         playVideo(currentVideo);
       });
 
-      // Guardar respuestas
+      // ✅ Guardar respuestas
       document.querySelectorAll(".question button").forEach((btn) => {
         btn.addEventListener("click", async (e) => {
           const questionDiv = e.target.closest(".question");
@@ -198,6 +203,7 @@
         });
       });
 
+      // Mostrar la primera pregunta al final
       document.querySelector(".question").style.display = "block";
     });
   </script>

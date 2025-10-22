@@ -1,0 +1,35 @@
+{
+  "name": "Suite Ejecutiva Digital - Somos Repuestos Motos",
+  "short_name": "SRM-QK",
+  "description": "Explora la estrategia visual y digital que impulsa el crecimiento de Somos Repuestos Motos.",
+  "start_url": "/QK/index.html",
+  "scope": "/QK/",
+  "display": "standalone",
+  "background_color": "#0A2F7B",
+  "theme_color": "#00B6C8",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://somosrepuestosmotos-coder.github.io/QK/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://somosrepuestosmotos-coder.github.io/QK/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://somosrepuestosmotos-coder.github.io/QK/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "https://somosrepuestosmotos-coder.github.io/QK/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ]
+}

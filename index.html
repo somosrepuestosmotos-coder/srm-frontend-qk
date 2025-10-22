@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suite Ejecutiva Digital - Somos Repuestos Motos</title>
+  <meta name="description" content="Explora la propuesta estratégica de la Suite Ejecutiva Digital: innovación, marca y crecimiento para el futuro de Somos Repuestos Motos.">
+
+    <link rel="icon" href="/QK/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="/QK/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/QK/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/QK/apple-touch-icon.png">
+  <link rel="manifest" href="/QK/site.webmanifest">
+  <meta name="theme-color" content="#0A2F7B" />
+
+    <meta property="og:title" content="Suite Ejecutiva Digital - Somos Repuestos Motos">
+  <meta property="og:description" content="Estrategia, tecnología y visión: el futuro digital de Somos Repuestos Motos.">
+  <meta property="og:image" content="https://somosrepuestosmotos-coder.github.io/QK/android-chrome-512x512.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:url" content="https://somosrepuestosmotos-coder.github.io/QK/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+
+    <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Suite Ejecutiva Digital - Somos Repuestos Motos">
+  <meta name="twitter:description" content="Explora la estrategia visual y digital que impulsa el crecimiento.">
+  <meta name="twitter:image" content="https://somosrepuestosmotos-coder.github.io/QK/android-chrome-512x512.png">
+
+  <style>
+    :root {
+      --primary-color: #0A2F7B;
+      --secondary-color: #00B6C8;
+      --text-color: #FFFFFF;
+    }
+    body, html {
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      overflow: hidden; background-color: #000;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text-color);
+    }
+    .scene {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; text-align: center;
+      opacity: 0; transition: opacity 1.8s ease-in-out;
+    }
+    .scene.active { opacity: 1; z-index: 2; }
+    .scene-video {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%; height: 100%; object-fit: cover;
+      background-color: #000; z-index: -2;
+    }
+    .scene-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.35));
+      z-index: -1;
+    }
+    .scene-content {
+      position: relative; z-index: 1; opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 1.4s ease-out, transform 1.4s ease-out;
+      padding: 2rem; box-sizing: border-box;
+    }
+    .scene.active .scene-content.visible { opacity: 1; transform: translateY(0); }
+    .scene h1 {
+      font-size: 3.8vw; margin-bottom: 1.5vw; font-weight: 700;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.8); letter-spacing: 0.03em;
+    }
+    .scene p {
+      font-size: 1.9vw; max-width: 55%; line-height: 1.6; font-weight: 300;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.8);
+      text-align: justify; text-justify: inter-word; margin: 0 auto;
+    }
+    #form-container {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8); z-index: 100;
+      display: none; justify-content: center; align-items: center;
+      backdrop-filter: blur(10px);
+    }
+    .form-content { width: 90%; max-width: 800px; }
+    .question-card {
+      background-color: #2c2c2c; padding: 40px; border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none;
+    }
+    .question-card.active { display: block; animation: fadeIn 0.5s forwards; }
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    #progress-bar-container {
+      width: 100%; background-color: #444; border-radius: 5px;
+      overflow: hidden; margin-bottom: 30px;
+    }
+    #progress-bar {
+      width: 0%; height: 10px; background-color: var(--secondary-color);
+      transition: width 0.4s ease-out;
+    }
+    .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .answer-btn {
+      background-color: #3e3e3e; color: var(--text-color);
+      border: 1px solid #555; padding: 15px 20px; border-radius: 8px;
+      cursor: pointer; font-size: 1rem;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .answer-btn:hover { background-color: var(--secondary-color); transform: translateY(-3px); }
+    @media (max-width: 768px) {
+      .scene h1 { font-size: 6vw; }
+      .scene p { font-size: 3.5vw; max-width: 90%; }
+      .answers { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<main id="presentation-container">
+  <div class="scene active" id="scene-1">
+    <div class="scene-overlay"></div>
+    <video class="scene-video" autoplay muted playsinline preload="auto">
+            <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-logo-qk-original.mp4" type="video/mp4">
+    </video>
+    <div class="scene-content"><h1>Comenzamos por entender el corazón de su negocio.</h1><p>Analizamos su situación actual, su catálogo y su posición en el mercado. Vimos la base de un líder.</p></div>
+  </div>
+
+  <div class="scene" id="scene-2">
+    <div class="scene-overlay"></div>
+    <video class="scene-video" autoplay muted playsinline preload="auto">
+      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-insight-mercado.mp4" type="video/mp4">
+    </video>
+    <div class="scene-content"><h1>Pero descubrimos una oportunidad que sus competidores no ven.</h1><p>Su verdadero potencial no está solo en la calidad de sus piezas, sino en la construcción de una marca que inspire confianza inmediata a nivel digital.</p></div>
+  </div>
+
+  <div class="scene" id="scene-3">
+    <div class="scene-overlay"></div>
+    <video class="scene-video" autoplay muted playsinline preload="auto">
+      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-nuevo-logo-3d.mp4" type="video/mp4">
+    </video>
+    <div class="scene-content"><h1>Visualizamos su marca, no como es, sino como debería ser.</h1><p>Una identidad visual que comunica potencia, confianza y liderazgo tecnológico en cada punto de contacto.</p></div>
+  </div>
+
+  <div class="scene" id="scene-4">
+    <div class="scene-overlay"></div>
+    <video class="scene-video" autoplay muted playsinline preload="auto">
+      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-papeleria-merchandising-packaging.mp4" type="video/mp4">
+    </video>
+    <div class="scene-content"><h1>Una marca que cobra vida en el mundo real.</h1><p>Desde la primera tarjeta de presentación hasta el empaque de cada producto, su nueva identidad proyecta calidad y confianza.</p></div>
+  </div>
+
+  <div class="scene" id="scene-5">
+    <div class="scene-overlay"></div>
+    <video class="scene-video" autoplay muted playsinline preload="auto">
+      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-ecosistema-digital.mp4" type="video/mp4">
+    </video>
+    <div class="scene-content"><h1>Más que una nueva imagen, un sistema diseñado para crecer.</h1><p>Hemos estructurado una estrategia completa que transforma su experiencia en un motor de ventas predecible y automatizado.</p></div>
+  </div>
+
+  <div class="scene" id="scene-6">
+    <div class="scene-overlay"></div>
+    <video class="scene-video" autoplay muted playsinline preload="auto">
+      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-srm-qk-k.mp4" type="video/mp4">
+    </video>
+    <div class="scene-content"><h1>Hemos construido el 90% del camino. El 10% final lo diseñamos juntos.</h1><p>Esta visión estratégica necesita ser ajustada a sus objetivos específicos. Su conocimiento es la pieza clave para personalizar el Plan Piloto.</p></div>
+  </div>
+</main>
+
+<div id="form-container">
+  <div class="form-content">
+    <div id="progress-bar-container"><div id="progress-bar"></div></div>
+    <div id="questions-wrapper"></div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const scenes = Array.from(document.querySelectorAll('.scene'));
+  let currentSceneIndex = 0;
+  const formContainer = document.getElementById('form-container');
+  const questionsWrapper = document.getElementById('questions-wrapper');
+  const progressBar = document.getElementById('progress-bar');
+  let currentQuestionIndex = 0;
+  let sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2,9)}`;
+
+  const questions = [
+    { key: 'main_objective_6m', text: '¿Cuál es su objetivo principal para los próximos 6 meses?', answers: ['Aumentar ventas B2B', 'Expandir a nuevas regiones', 'Mejorar la rentabilidad', 'Fortalecer la marca'] },
+    { key: 'biggest_challenge', text: '¿Cuál considera su mayor desafío actualmente?', answers: ['Competencia de precios', 'Logística y entregas', 'Fidelización de clientes', 'Digitalización de procesos'] },
+    { key: 'investment_priority', text: '¿En qué área priorizaría la inversión?', answers: ['Marketing y Publicidad', 'Tecnología (E-commerce, CRM)', 'Inventario y Stock', 'Capacitación de equipo'] },
+    { key: 'start_timeline', text: '¿Cuál es su cronograma ideal para iniciar este plan piloto?', answers: ['Inmediatamente', 'En el próximo mes', 'En el próximo trimestre', 'Aún por definir'] }
+  ];
+
+  function showText(scene) {
+    const content = scene.querySelector('.scene-content');
+    setTimeout(() => content.classList.add('visible'), 1000);
+  }
+
+  function transitionToScene(nextIndex) {
+    if (nextIndex >= scenes.length) { showForm(); return; }
+    scenes[currentSceneIndex].classList.remove('active');
+    const next = scenes[nextIndex];
+    next.classList.add('active');
+    showText(next);
+    const video = next.querySelector('video');
+    if (video) {
+      video.currentTime = 0;
+      video.play().catch(()=>{});
+      video.onended = () => transitionToScene(nextIndex + 1);
+    }
+    currentSceneIndex = nextIndex;
+  }
+
+  document.getElementById('presentation-container').addEventListener('click', () => {
+    if (currentSceneIndex === scenes.length - 1) showForm();
+    else transitionToScene(currentSceneIndex + 1);
+  });
+
+  function showForm() {
+    formContainer.style.display = 'flex';
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    questionsWrapper.innerHTML = '';
+    if (currentQuestionIndex >= questions.length) { showThankYou(); return; }
+    const q = questions[currentQuestionIndex];
+    const card = document.createElement('div');
+    card.className = 'question-card active';
+    card.innerHTML = `<h2>${q.text}</h2><div class="answers">${q.answers.map(a=>`<button class'answer-btn' data-key='${q.key}' data-value='${a}'>${a}</button>`).join('')}</div>`;
+    questionsWrapper.appendChild(card);
+    document.querySelectorAll('.answer-btn').forEach(btn => btn.addEventListener('click', handleAnswer));
+  }
+
+  async function handleAnswer(e) {
+    const key = e.target.dataset.key, value = e.target.dataset.value;
+    try {
+      const res = await fetch("https://srm-backend-qk-lwid.onrender.com/api/responder", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ sessionId, key, value })
+      });
+      if (!res.ok) throw new Error("Servidor");
+      e.target.classList.add('selected');
+      setTimeout(() => { currentQuestionIndex++; updateProgress(); renderQuestion(); }, 400);
+    } catch (err) {
+      alert("No se pudo registrar la respuesta. Intenta nuevamente.");
+    }
+  }
+
+  function updateProgress() {
+    progressBar.style.width = `${(currentQuestionIndex / questions.length) * 100}%`;
+  }
+
+  function showThankYou() {
+    questionsWrapper.innerHTML = `<div class="question-card active" style="text-align:center;">
+      <h1>Gracias. Hemos recibido su diagnóstico.</h1>
+      <p style="font-size:1.2rem;">Nuestro equipo ya está personalizando su Plan Piloto de Adquisición. Recibirá su hoja de ruta en 48 horas.</p>
+    </div>`;
+    progressBar.style.width = '100%';
+  }
+
+  // --- INICIO ---
+  showText(scenes[0]);
+  const firstVideo = scenes[0].querySelector('video');
+  firstVideo.play().catch(e => console.warn("Autoplay bloqueado. Esperando clic."));
+  firstVideo.onended = () => transitionToScene(1);
+});
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register("/QK/service-worker-lite.js", { scope: "/QK/" })
+    .then(reg => console.log("✅ Service Worker Lite Registrado", reg.scope))
+    .catch(err => console.error("❌ Error al registrar Service Worker", err));
+}
+</script>
+</body>
+</html>

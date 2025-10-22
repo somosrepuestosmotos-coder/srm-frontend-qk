@@ -5,6 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Suite Ejecutiva Digital - Propuesta Estratégica</title>
 
+<!-- 🔹 Íconos y manifest -->
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="shortcut icon" href="favicon.ico">
+<meta name="theme-color" content="#0A2F7B">
+
+<!-- 🔹 SEO y Open Graph -->
+<meta name="description" content="Propuesta estratégica digital para Somos Repuestos Motos: innovación, branding y crecimiento comercial con visión tecnológica.">
+<meta property="og:title" content="Suite Ejecutiva Digital - Somos Repuestos Motos">
+<meta property="og:description" content="Estrategia, tecnología y visión: el futuro digital de Somos Repuestos Motos.">
+<meta property="og:image" content="https://somosrepuestosmotos-coder.github.io/srm-frontend-qk/android-chrome-512x512.png">
+<meta property="og:url" content="https://somosrepuestosmotos-coder.github.io/srm-frontend-qk/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Suite Ejecutiva Digital - Somos Repuestos Motos">
+<meta name="twitter:description" content="Explora la estrategia visual y digital que impulsa el crecimiento.">
+<meta name="twitter:image" content="https://somosrepuestosmotos-coder.github.io/srm-frontend-qk/android-chrome-512x512.png">
+
+<!-- 🔹 Performance -->
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preconnect" href="https://i.ytimg.com">
+
+<!-- 🔹 YouTube API -->
+<script defer src="https://www.youtube.com/iframe_api"></script>
+
 <style>
 :root {
   --primary-color: #0A2F7B;
@@ -12,22 +40,22 @@
   --text-color: #FFFFFF;
 }
 
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #000;
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  overflow: hidden; background-color: #000;
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
   color: var(--text-color);
+  cursor: pointer;
+  user-select: none;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* === Escenas === */
 .scene {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,32 +64,38 @@ body, html {
   opacity: 0;
   transition: opacity 1.8s ease-in-out;
 }
+.scene.active { opacity: 1; z-index: 2; }
 
-.scene.active {
-  opacity: 1;
-  z-index: 2;
-}
-
-/* === Iframes (YouTube) === */
-.scene-iframe {
+/* === Videos === */
+.video-wrapper {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%; height: 100%;
-  border: none;
+  inset: 0;
   z-index: -2;
+  background: #000;
+  overflow: hidden;
 }
+.scene-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  height: 100vh;
+  width: 177.77vh;
+}
+@media (min-aspect-ratio: 16/9) {
+  .scene-video { width: 100vw; height: 56.25vw; }
+}
+.scene-video > iframe { width: 100%; height: 100%; border: none; }
 
-/* === Overlay con degradado === */
 .scene-overlay {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  inset: 0;
   background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.35));
   z-index: -1;
 }
 
-/* === Texto === */
+/* === Contenido === */
 .scene-content {
   position: relative;
   z-index: 1;
@@ -71,19 +105,16 @@ body, html {
   padding: 2rem;
   box-sizing: border-box;
 }
-
 .scene.active .scene-content.visible {
   opacity: 1;
   transform: translateY(0);
 }
-
 .scene h1 {
   font-size: 3.8vw;
   margin-bottom: 1.5vw;
   font-weight: 700;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
 }
-
 .scene p {
   font-size: 1.9vw;
   max-width: 55%;
@@ -94,12 +125,35 @@ body, html {
   margin: 0 auto;
 }
 
+/* === Prompt === */
+#start-prompt {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-size: 1.2vw;
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.5);
+  padding: 10px 20px;
+  border-radius: 50px;
+  opacity: 0;
+  transition: opacity 1s ease-in-out 2s;
+  animation: pulse 2s infinite alternate 3s;
+  pointer-events: none;
+}
+#start-prompt.visible { opacity: 1; }
+#start-prompt.hidden { opacity: 0; display: none; }
+@keyframes pulse {
+  from { background-color: rgba(0,182,200,0.1); }
+  to { background-color: rgba(0,182,200,0.3); }
+}
+
 /* === Formulario === */
 #form-container {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  inset: 0;
+  background-color: rgba(0,0,0,0.8);
   z-index: 100;
   display: none;
   justify-content: center;
@@ -125,7 +179,8 @@ body, html {
   margin-bottom: 30px;
 }
 #progress-bar {
-  width: 0%; height: 10px;
+  width: 0%;
+  height: 10px;
   background-color: var(--secondary-color);
   transition: width 0.4s ease-out;
 }
@@ -148,9 +203,12 @@ body, html {
   background-color: var(--secondary-color);
   transform: translateY(-3px);
 }
+
+/* === Responsive === */
 @media (max-width: 768px) {
   .scene h1 { font-size: 6vw; }
   .scene p { font-size: 3.5vw; max-width: 90%; }
+  #start-prompt { font-size: 3vw; }
   .answers { grid-template-columns: 1fr; }
 }
 </style>
@@ -158,51 +216,23 @@ body, html {
 
 <body>
 <main id="presentation-container">
-  <!-- Escenas con videos de YouTube -->
   <div class="scene active" id="scene-1">
     <div class="scene-overlay"></div>
-    <iframe class="scene-iframe" src="https://www.youtube.com/embed/IOmOHeevOp8?autoplay=1&mute=1&playsinline=1&enablejsapi=1" allow="autoplay; fullscreen"></iframe>
-    <div class="scene-content"><h1>Comenzamos por entender el corazón de su negocio.</h1>
-      <p>Analizamos su situación actual, su catálogo y su posición en el mercado. Vimos la base de un líder.</p></div>
+    <div class="video-wrapper"><div id="video-1" class="scene-video"></div></div>
+    <div class="scene-content">
+      <h1>Comenzamos por entender el corazón de su negocio.</h1>
+      <p>Analizamos su situación actual, su catálogo y su posición en el mercado. Vimos la base de un líder.</p>
+    </div>
+    <div id="start-prompt">Haz clic para comenzar</div>
   </div>
 
-  <div class="scene" id="scene-2">
-    <div class="scene-overlay"></div>
-    <iframe class="scene-iframe" src="https://www.youtube.com/embed/8EeEbn7DT04?autoplay=0&mute=1&playsinline=1&enablejsapi=1" allow="autoplay; fullscreen"></iframe>
-    <div class="scene-content"><h1>Pero descubrimos una oportunidad que sus competidores no ven.</h1>
-      <p>Su verdadero potencial no está solo en la calidad de sus piezas, sino en la construcción de una marca que inspire confianza inmediata a nivel digital.</p></div>
-  </div>
-
-  <div class="scene" id="scene-3">
-    <div class="scene-overlay"></div>
-    <iframe class="scene-iframe" src="https://www.youtube.com/embed/sRbaFSkZvgs?autoplay=0&mute=1&playsinline=1&enablejsapi=1" allow="autoplay; fullscreen"></iframe>
-    <div class="scene-content"><h1>Visualizamos su marca, no como es, sino como debería ser.</h1>
-      <p>Una identidad visual que comunica potencia, confianza y liderazgo tecnológico en cada punto de contacto.</p></div>
-  </div>
-
-  <div class="scene" id="scene-4">
-    <div class="scene-overlay"></div>
-    <iframe class="scene-iframe" src="https://www.youtube.com/embed/8mVLMXTiXCY?autoplay=0&mute=1&playsinline=1&enablejsapi=1" allow="autoplay; fullscreen"></iframe>
-    <div class="scene-content"><h1>Una marca que cobra vida en el mundo real.</h1>
-      <p>Desde la primera tarjeta de presentación hasta el empaque de cada producto, su nueva identidad proyecta calidad y confianza.</p></div>
-  </div>
-
-  <div class="scene" id="scene-5">
-    <div class="scene-overlay"></div>
-    <iframe class="scene-iframe" src="https://www.youtube.com/embed/tHF3LaB90yM?autoplay=0&mute=1&playsinline=1&enablejsapi=1" allow="autoplay; fullscreen"></iframe>
-    <div class="scene-content"><h1>Más que una nueva imagen, un sistema diseñado para crecer.</h1>
-      <p>Hemos estructurado una estrategia completa que transforma su experiencia en un motor de ventas predecible y automatizado.</p></div>
-  </div>
-
-  <div class="scene" id="scene-6">
-    <div class="scene-overlay"></div>
-    <iframe class="scene-iframe" src="https://www.youtube.com/embed/jXJbwVh1bog?autoplay=0&mute=1&playsinline=1&enablejsapi=1" allow="autoplay; fullscreen"></iframe>
-    <div class="scene-content"><h1>Hemos construido el 90% del camino. El 10% final lo diseñamos juntos.</h1>
-      <p>Esta visión estratégica necesita ser ajustada a sus objetivos específicos. Su conocimiento es la pieza clave para personalizar el Plan Piloto.</p></div>
-  </div>
+  <div class="scene" id="scene-2"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-2" class="scene-video"></div></div><div class="scene-content"><h1>Pero descubrimos una oportunidad que sus competidores no ven.</h1><p>Su verdadero potencial no está solo en la calidad de sus piezas, sino en la construcción de una marca que inspire confianza inmediata a nivel digital.</p></div></div>
+  <div class="scene" id="scene-3"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-3" class="scene-video"></div></div><div class="scene-content"><h1>Visualizamos su marca, no como es, sino como debería ser.</h1><p>Una identidad visual que comunica potencia, confianza y liderazgo tecnológico en cada punto de contacto.</p></div></div>
+  <div class="scene" id="scene-4"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-4" class="scene-video"></div></div><div class="scene-content"><h1>Una marca que cobra vida en el mundo real.</h1><p>Desde la primera tarjeta de presentación hasta el empaque de cada producto, su nueva identidad proyecta calidad y confianza.</p></div></div>
+  <div class="scene" id="scene-5"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-5" class="scene-video"></div></div><div class="scene-content"><h1>Más que una nueva imagen, un sistema diseñado para crecer.</h1><p>Hemos estructurado una estrategia completa que transforma su experiencia en un motor de ventas predecible y automatizado.</p></div></div>
+  <div class="scene" id="scene-6"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-6" class="scene-video"></div></div><div class="scene-content"><h1>Hemos construido el 90% del camino. El 10% final lo diseñamos juntos.</h1><p>Esta visión estratégica necesita ser ajustada a sus objetivos específicos. Su conocimiento es la pieza clave para personalizar el Plan Piloto.</p></div></div>
 </main>
 
-<!-- FORMULARIO -->
 <div id="form-container">
   <div class="form-content">
     <div id="progress-bar-container"><div id="progress-bar"></div></div>
@@ -211,83 +241,93 @@ body, html {
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const scenes = Array.from(document.querySelectorAll('.scene'));
-  let currentSceneIndex = 0;
-  const formContainer = document.getElementById('form-container');
-  const questionsWrapper = document.getElementById('questions-wrapper');
-  const progressBar = document.getElementById('progress-bar');
+const videoIDs=['IOmOHeevOp8','8EeEbn7DT04','sRbaFSkZvgs','8mVLMXTiXCY','tHF3LaB90yM','jXJbwVh1bog'];
+let scenes,players=[],currentSceneIndex=0,currentQuestionIndex=0;
+let formContainer,questionsWrapper,progressBar,startPrompt;
+let presentationStarted=false;
+const sessionId=`session_${Date.now()}_${Math.random().toString(36).substr(2,9)}`;
+const questions=[
+{key:'main_objective_6m',text:'¿Cuál es su objetivo principal para los próximos 6 meses?',answers:['Aumentar ventas B2B','Expandir a nuevas regiones','Mejorar la rentabilidad','Fortalecer la marca']},
+{key:'biggest_challenge',text:'¿Cuál considera su mayor desafío actualmente?',answers:['Competencia de precios','Logística y entregas','Fidelización de clientes','Digitalización de procesos']},
+{key:'investment_priority',text:'¿En qué área priorizaría la inversión?',answers:['Marketing y Publicidad','Tecnología (E-commerce, CRM)','Inventario y Stock','Capacitación de equipo']},
+{key:'start_timeline',text:'¿Cuál es su cronograma ideal para iniciar este plan piloto?',answers:['Inmediatamente','En el próximo mes','En el próximo trimestre','Aún por definir']}];
 
-  const questions = [
-    { key: 'main_objective_6m', text: '¿Cuál es su objetivo principal para los próximos 6 meses?', answers: ['Aumentar ventas B2B', 'Expandir a nuevas regiones', 'Mejorar la rentabilidad', 'Fortalecer la marca'] },
-    { key: 'biggest_challenge', text: '¿Cuál considera su mayor desafío actualmente?', answers: ['Competencia de precios', 'Logística y entregas', 'Fidelización de clientes', 'Digitalización de procesos'] },
-    { key: 'investment_priority', text: '¿En qué área priorizaría la inversión?', answers: ['Marketing y Publicidad', 'Tecnología (E-commerce, CRM)', 'Inventario y Stock', 'Capacitación de equipo'] },
-    { key: 'start_timeline', text: '¿Cuál es su cronograma ideal para iniciar este plan piloto?', answers: ['Inmediatamente', 'En el próximo mes', 'En el próximo trimestre', 'Aún por definir'] }
-  ];
+function onYouTubeIframeAPIReady(){
+  scenes=[...document.querySelectorAll('.scene')];
+  formContainer=document.getElementById('form-container');
+  questionsWrapper=document.getElementById('questions-wrapper');
+  progressBar=document.getElementById('progress-bar');
+  startPrompt=document.getElementById('start-prompt');
 
-  // Mostrar texto de la escena
-  function showText(scene) {
-    const content = scene.querySelector('.scene-content');
-    if (content) setTimeout(() => content.classList.add('visible'), 800);
-  }
+  videoIDs.forEach((id,i)=>players[i]=new YT.Player(`video-${i+1}`,{
+    videoId:id,
+    playerVars:{autoplay:0,mute:1,controls:0,rel:0,loop:0,playsinline:1,modestbranding:1,origin:window.location.origin},
+    events:{'onReady':onPlayerReady,'onStateChange':onPlayerStateChange}
+  }));
 
-  // Transición
-  function transitionToScene(nextIndex) {
-    if (nextIndex >= scenes.length) return showForm();
-    scenes[currentSceneIndex].classList.remove('active');
-    const next = scenes[nextIndex];
-    next.classList.add('active');
-    currentSceneIndex = nextIndex;
-    showText(next);
-  }
-
-  // Avance manual
-  document.getElementById('presentation-container').addEventListener('click', () => {
-    if (currentSceneIndex < scenes.length - 1) transitionToScene(currentSceneIndex + 1);
-    else showForm();
+  document.getElementById('presentation-container').addEventListener('click',()=>{
+    if(!presentationStarted){presentationStarted=true;startPrompt.classList.add('hidden');startPresentation();}
+    else currentSceneIndex===scenes.length-1?showForm():transitionToScene(currentSceneIndex+1);
   });
+}
 
-  // Mostrar formulario
-  function showForm() {
-    formContainer.style.display = 'flex';
-    renderQuestion(0);
+function onPlayerReady(e){
+  if(players[0]&&e.target.getIframe().id===players[0].getIframe().id){
+    showTextForScene(scenes[0]);
+    startPrompt.classList.add('visible');
   }
+}
 
-  let currentQuestion = 0;
-  function renderQuestion(index) {
-    questionsWrapper.innerHTML = '';
-    if (index >= questions.length) return showThankYou();
-
-    const q = questions[index];
-    const card = document.createElement('div');
-    card.className = 'question-card active';
-    card.innerHTML = `<h2>${q.text}</h2><div class="answers">${q.answers.map(a => `<button class='answer-btn' data-key='${q.key}' data-value='${a}'>${a}</button>`).join('')}</div>`;
-    questionsWrapper.appendChild(card);
-
-    document.querySelectorAll('.answer-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        currentQuestion++;
-        progressBar.style.width = ((currentQuestion / questions.length) * 100) + '%';
-        renderQuestion(currentQuestion);
-      });
-    });
+function onPlayerStateChange(e){
+  if(e.data===YT.PlayerState.ENDED && players[currentSceneIndex] && e.target.getIframe().id===players[currentSceneIndex].getIframe().id){
+    currentSceneIndex<scenes.length-1?transitionToScene(currentSceneIndex+1):showForm();
   }
+}
 
-  function showThankYou() {
-    questionsWrapper.innerHTML = `
-      <div class="question-card active" style="text-align: center;">
-        <h1>Gracias. Hemos recibido su diagnóstico.</h1>
-        <p style="font-size: 1.2rem; max-width: 100%;">
-          Nuestro equipo de estrategia ya está utilizando sus respuestas para personalizar su Plan Piloto de Adquisición.
-          Recibirá su hoja de ruta detallada en las próximas 48 horas. Prepárese para acelerar.
-        </p>
-      </div>`;
-    progressBar.style.width = "100%";
-  }
-
-  showText(scenes[0]);
-});
+function showTextForScene(scene){
+  const c=scene.querySelector('.scene-content');
+  if(c) setTimeout(()=>c.classList.add('visible'),1000);
+}
+function hideAllTexts(){scenes.forEach(s=>s.querySelector('.scene-content')?.classList.remove('visible'));}
+function transitionToScene(next){
+  if(next>=scenes.length||!scenes[next]) return;
+  hideAllTexts();
+  scenes[currentSceneIndex].classList.remove('active');
+  players[currentSceneIndex]?.stopVideo();
+  scenes[next].classList.add('active');
+  players[next]?.seekTo(0);
+  players[next]?.playVideo();
+  currentSceneIndex=next;
+  showTextForScene(scenes[next]);
+}
+function startPresentation(){hideAllTexts();players[0]?.playVideo();showTextForScene(scenes[0]);}
+function showForm(){formContainer.style.display='flex';players[currentSceneIndex]?.pauseVideo();renderQuestion();}
+function renderQuestion(){
+  questionsWrapper.innerHTML='';
+  if(currentQuestionIndex>=questions.length) return showThankYou();
+  const q=questions[currentQuestionIndex];
+  const c=document.createElement('div');
+  c.className='question-card active';
+  c.innerHTML=`<h2>${q.text}</h2><div class="answers">${q.answers.map(a=>`<button class='answer-btn' data-key='${q.key}' data-value='${a}'>${a}</button>`).join('')}</div>`;
+  questionsWrapper.appendChild(c);
+  document.querySelectorAll('.answer-btn').forEach(b=>b.addEventListener('click',handleAnswer));
+}
+async function handleAnswer(e){
+  const key=e.target.dataset.key,value=e.target.dataset.value;
+  const baseURL=(window.location.hostname.includes('localhost')||window.location.hostname.includes('127.0.0.1'))
+    ?'http://localhost:10000/api/responder'
+    :'https://srm-backend-qk-lwid.onrender.com/api/responder';
+  try{
+    const res=await fetch(baseURL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId,key,value})});
+    if(!res.ok) throw new Error('Error al enviar datos');
+    currentQuestionIndex++;updateProgressBar();renderQuestion();
+  }catch(err){alert('No se pudo registrar la respuesta. Intente nuevamente.');}
+}
+function updateProgressBar(){progressBar.style.width=`${(currentQuestionIndex/questions.length)*100}%`;}
+function showThankYou(){
+  questionsWrapper.innerHTML=`<div class='question-card active' style='text-align:center;'><h1>Gracias. Hemos recibido su diagnóstico.</h1><p style='font-size:1.2rem;'>Nuestro equipo de estrategia ya está utilizando sus respuestas para personalizar su Plan Piloto. Recibirá su hoja de ruta en las próximas 48 horas.</p></div>`;
+  progressBar.style.width='100%';
+}
 </script>
-
 </body>
 </html>

@@ -1,15 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<!-- 🧠 SRM-QK v1.2 — Propuesta Estratégica Interactiva -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Suite Ejecutiva Digital - Propuesta Estratégica</title>
+<title>Suite Ejecutiva Digital - SRM-QK</title>
 
-<!-- ✅ Favicon y Manifest con ruta /QK/ -->
-<link rel="manifest" href="/QK/site.webmanifest?v=1.1.2">
+<!-- 🎨 Manifesto visual -->
 <meta name="theme-color" content="#0A2F7B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SRM-QK">
+<meta name="application-name" content="SRM-QK">
+<meta name="description" content="Propuesta estratégica interactiva de transformación digital para Somos Repuestos Motos.">
+
+<!-- 🖼️ Favicon e íconos -->
 <link rel="icon" href="/QK/favicon.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="/QK/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/QK/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/QK/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/QK/apple-touch-icon.png">
+<link rel="manifest" href="/QK/site.webmanifest">
+
+<!-- 🧩 Open Graph / SEO -->
+<meta property="og:title" content="Suite Ejecutiva Digital - SRM-QK">
+<meta property="og:description" content="Propuesta estratégica interactiva: la transformación digital de Somos Repuestos Motos.">
+<meta property="og:image" content="https://srm-backend-qk-lwid.onrender.com/videos/og-image-srmqk.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://somosrepuestosmotos-coder.github.io/srm-frontend-qk/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Suite Ejecutiva Digital - SRM-QK">
+<meta name="twitter:description" content="Estrategia digital interactiva para Somos Repuestos Motos.">
+<meta name="twitter:image" content="https://srm-backend-qk-lwid.onrender.com/videos/og-image-srmqk.png">
 
 <style>
 :root {
@@ -20,11 +45,13 @@
 body, html {
   margin: 0; padding: 0;
   width: 100%; height: 100%;
-  overflow: hidden;
   background-color: #000;
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
   color: var(--text-color);
+  overflow: hidden;
 }
+
+/* === Escenas === */
 .scene {
   position: absolute; top: 0; left: 0;
   width: 100%; height: 100%;
@@ -34,83 +61,99 @@ body, html {
   opacity: 0; transition: opacity 1.8s ease-in-out;
 }
 .scene.active { opacity: 1; z-index: 2; }
+
+/* === Videos === */
 .scene-video {
-  position: absolute; top: 50%; left: 50%;
+  position: absolute;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   width: 100%; height: 100%;
-  object-fit: cover; background-color: #000; z-index: -2;
+  object-fit: contain;
+  background-color: #000;
+  z-index: -2;
 }
+@media (min-aspect-ratio: 16/9) { .scene-video { object-fit: cover; } }
+
 .scene-overlay {
-  position: absolute; top: 0; left: 0;
+  position: absolute;
+  top: 0; left: 0;
   width: 100%; height: 100%;
   background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.35));
   z-index: -1;
 }
 .scene-content {
-  position: relative; z-index: 1;
-  opacity: 0; transform: translateY(25px);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(25px);
   transition: opacity 1.4s ease-out, transform 1.4s ease-out;
   padding: 2rem;
 }
 .scene.active .scene-content.visible { opacity: 1; transform: translateY(0); }
+
 .scene h1 {
-  font-size: 3.8vw; margin-bottom: 1.5vw; font-weight: 700;
+  font-size: 3.8vw;
+  font-weight: 700;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
 }
 .scene p {
-  font-size: 1.9vw; max-width: 55%; line-height: 1.6;
-  font-weight: 300; text-shadow: 1px 1px 6px rgba(0,0,0,0.8);
-  text-align: justify; margin: 0 auto;
+  font-size: 1.9vw;
+  max-width: 55%;
+  line-height: 1.6;
+  font-weight: 300;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.8);
+  text-align: justify;
+  margin: 0 auto;
 }
-#start-button {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--secondary-color);
-  color: var(--text-color);
-  padding: 1rem 2rem; border: none; border-radius: 10px;
-  font-size: 1.5rem; cursor: pointer; z-index: 10;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
-  transition: all 0.3s ease;
-}
-#start-button:hover { background-color: #00cce0; transform: translate(-50%, -50%) scale(1.05); }
 
-/* formulario */
+/* === Botón de inicio === */
+#start-btn {
+  position: absolute;
+  bottom: 10%;
+  background: var(--secondary-color);
+  color: #fff;
+  padding: 1rem 2.5rem;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  z-index: 10;
+}
+#start-btn:hover { background: #0ae0ff; transform: translateY(-3px); }
+
+/* === Formulario === */
 #form-container {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); z-index: 100;
-  display: none; justify-content: center; align-items: center;
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100; display: none;
+  justify-content: center; align-items: center;
   backdrop-filter: blur(10px);
 }
 .form-content { width: 90%; max-width: 800px; }
 .question-card {
-  background-color: #2c2c2c; padding: 40px; border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none;
+  background-color: #2c2c2c;
+  padding: 40px; border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: none;
 }
 .question-card.active { display: block; animation: fadeIn 0.5s forwards; }
 @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-
 #progress-bar-container {
-  width: 100%; background-color: #444; border-radius: 5px;
-  overflow: hidden; margin-bottom: 30px;
+  width: 100%; background-color: #444;
+  border-radius: 5px; overflow: hidden; margin-bottom: 30px;
 }
-#progress-bar {
-  width: 0%; height: 10px;
-  background-color: var(--secondary-color);
-  transition: width 0.4s ease-out;
-}
-.answers {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
-}
+#progress-bar { width: 0%; height: 10px; background-color: var(--secondary-color); transition: width 0.4s; }
+.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .answer-btn {
-  background-color: #3e3e3e; color: var(--text-color);
+  background-color: #3e3e3e; color: #fff;
   border: 1px solid #555; padding: 15px 20px;
-  border-radius: 8px; cursor: pointer; font-size: 1rem;
+  border-radius: 8px; cursor: pointer;
+  font-size: 1rem;
   transition: background-color 0.3s, transform 0.2s;
 }
-.answer-btn:hover {
-  background-color: var(--secondary-color);
-  transform: translateY(-3px);
-}
+.answer-btn:hover { background-color: var(--secondary-color); transform: translateY(-3px); }
 @media (max-width: 768px) {
   .scene h1 { font-size: 6vw; }
   .scene p { font-size: 3.5vw; max-width: 90%; }
@@ -120,58 +163,54 @@ body, html {
 </head>
 
 <body>
-<button id="start-button">Comenzar presentación</button>
-
 <main id="presentation-container">
-  <div class="scene active" id="scene-1">
-    <div class="scene-overlay"></div>
-    <video class="scene-video" preload="auto" muted playsinline>
+  <div id="intro">
+    <video class="scene-video" autoplay muted playsinline loop>
       <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-logo-qk-original.mp4" type="video/mp4">
+    </video>
+    <div class="scene-overlay"></div>
+    <button id="start-btn">Comenzar</button>
+  </div>
+
+  <!-- Escenas -->
+  <div class="scene" id="scene-1">
+    <div class="scene-overlay"></div>
+    <video class="scene-video" preload="auto">
+      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-insight-mercado.mp4" type="video/mp4">
     </video>
     <div class="scene-content"><h1>Comenzamos por entender el corazón de su negocio.</h1><p>Analizamos su situación actual, su catálogo y su posición en el mercado. Vimos la base de un líder.</p></div>
   </div>
-
   <div class="scene" id="scene-2">
     <div class="scene-overlay"></div>
-    <video class="scene-video" muted playsinline>
-      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-insight-mercado.mp4" type="video/mp4">
+    <video class="scene-video" preload="auto">
+      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-nuevo-logo-3d.mp4" type="video/mp4">
     </video>
-    <div class="scene-content"><h1>Pero descubrimos una oportunidad que sus competidores no ven.</h1><p>Su verdadero potencial está en la construcción de una marca que inspire confianza inmediata a nivel digital.</p></div>
+    <div class="scene-content"><h1>Pero descubrimos una oportunidad que sus competidores no ven.</h1><p>Su verdadero potencial no está solo en la calidad de sus piezas, sino en la construcción de una marca que inspire confianza inmediata a nivel digital.</p></div>
   </div>
-
   <div class="scene" id="scene-3">
     <div class="scene-overlay"></div>
-    <video class="scene-video" muted playsinline>
-      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-nuevo-logo-3d.mp4" type="video/mp4">
+    <video class="scene-video" preload="auto">
+      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-papeleria-merchandising-packaging.mp4" type="video/mp4">
     </video>
     <div class="scene-content"><h1>Visualizamos su marca, no como es, sino como debería ser.</h1><p>Una identidad visual que comunica potencia, confianza y liderazgo tecnológico en cada punto de contacto.</p></div>
   </div>
-
   <div class="scene" id="scene-4">
     <div class="scene-overlay"></div>
-    <video class="scene-video" muted playsinline>
-      <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-papeleria-merchandising-packaging.mp4" type="video/mp4">
-    </video>
-    <div class="scene-content"><h1>Una marca que cobra vida en el mundo real.</h1><p>Desde la primera tarjeta hasta el empaque de cada producto, su nueva identidad proyecta calidad y confianza.</p></div>
-  </div>
-
-  <div class="scene" id="scene-5">
-    <div class="scene-overlay"></div>
-    <video class="scene-video" muted playsinline>
+    <video class="scene-video" preload="auto">
       <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-ecosistema-digital.mp4" type="video/mp4">
     </video>
-    <div class="scene-content"><h1>Más que una nueva imagen, un sistema diseñado para crecer.</h1><p>Una estrategia completa que convierte su marca en un motor de ventas predecible y automatizado.</p></div>
+    <div class="scene-content"><h1>Una marca que cobra vida en el mundo real.</h1><p>Desde la primera tarjeta de presentación hasta el empaque de cada producto, su nueva identidad proyecta calidad y confianza.</p></div>
   </div>
-
-  <div class="scene" id="scene-6">
+  <div class="scene" id="scene-5">
     <div class="scene-overlay"></div>
-    <video class="scene-video" muted playsinline>
+    <video class="scene-video" preload="auto">
       <source src="https://srm-backend-qk-lwid.onrender.com/videos/animacion-srm-qk-k.mp4" type="video/mp4">
     </video>
-    <div class="scene-content"><h1>Hemos construido el 90% del camino. El 10% final lo diseñamos juntos.</h1><p>Su conocimiento es la pieza clave para personalizar el Plan Piloto.</p></div>
+    <div class="scene-content"><h1>Más que una nueva imagen, un sistema diseñado para crecer.</h1><p>Hemos estructurado una estrategia completa que transforma su experiencia en un motor de ventas predecible y automatizado.</p></div>
   </div>
 </main>
 
+<!-- FORMULARIO -->
 <div id="form-container">
   <div class="form-content">
     <div id="progress-bar-container"><div id="progress-bar"></div></div>
@@ -180,119 +219,91 @@ body, html {
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const startButton = document.getElementById('start-button');
-  const scenes = Array.from(document.querySelectorAll('.scene'));
-  const formContainer = document.getElementById('form-container');
-  const questionsWrapper = document.getElementById('questions-wrapper');
-  const progressBar = document.getElementById('progress-bar');
-  let currentSceneIndex = 0, currentQuestionIndex = 0;
-  const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2,9)}`;
-  const backendURL = "https://srm-backend-qk-lwid.onrender.com/api/responder";
+document.addEventListener("DOMContentLoaded", () => {
+  const scenes = Array.from(document.querySelectorAll(".scene"));
+  const formContainer = document.getElementById("form-container");
+  const questionsWrapper = document.getElementById("questions-wrapper");
+  const progressBar = document.getElementById("progress-bar");
+  const startBtn = document.getElementById("start-btn");
+  let currentScene = 0;
+  let sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2,9)}`;
 
   const questions = [
-    { key: 'main_objective_6m', text: '¿Cuál es su objetivo principal para los próximos 6 meses?', answers: ['Aumentar ventas B2B', 'Expandir a nuevas regiones', 'Mejorar la rentabilidad', 'Fortalecer la marca'] },
-    { key: 'biggest_challenge', text: '¿Cuál considera su mayor desafío actualmente?', answers: ['Competencia de precios', 'Logística y entregas', 'Fidelización de clientes', 'Digitalización de procesos'] },
-    { key: 'investment_priority', text: '¿En qué área priorizaría la inversión?', answers: ['Marketing y Publicidad', 'Tecnología (E-commerce, CRM)', 'Inventario y Stock', 'Capacitación de equipo'] },
-    { key: 'start_timeline', text: '¿Cuál es su cronograma ideal para iniciar este plan piloto?', answers: ['Inmediatamente', 'En el próximo mes', 'En el próximo trimestre', 'Aún por definir'] }
+    { key: 'main_objective_6m', text: '¿Cuál es su objetivo principal para los próximos 6 meses?', answers: ['Aumentar ventas B2B','Expandir a nuevas regiones','Mejorar la rentabilidad','Fortalecer la marca'] },
+    { key: 'biggest_challenge', text: '¿Cuál considera su mayor desafío actualmente?', answers: ['Competencia de precios','Logística y entregas','Fidelización de clientes','Digitalización de procesos'] },
+    { key: 'investment_priority', text: '¿En qué área priorizaría la inversión?', answers: ['Marketing y Publicidad','Tecnología (E-commerce, CRM)','Inventario y Stock','Capacitación de equipo'] },
+    { key: 'start_timeline', text: '¿Cuál es su cronograma ideal para iniciar este plan piloto?', answers: ['Inmediatamente','En el próximo mes','En el próximo trimestre','Aún por definir'] }
   ];
 
-  startButton.addEventListener('click', () => {
-    startButton.style.display = 'none';
-    startPresentation();
-  });
-
-  function transitionToScene(i) {
-    if (i >= scenes.length) return showForm();
-    const current = scenes[currentSceneIndex];
-    const next = scenes[i];
-    current.classList.remove('active');
-    next.classList.add('active');
-    const v = next.querySelector('video');
-    if (v) {
-      v.currentTime = 0;
-      v.play().catch(()=>{});
-      v.onended = () => transitionToScene(i + 1);
-    }
-    currentSceneIndex = i;
-    showText(next);
-  }
-
   function startPresentation() {
-    const first = scenes[0];
-    first.classList.add('active');
-    const vid = first.querySelector('video');
-    if (vid) {
-      vid.play().catch(()=>{});
-      vid.onended = () => transitionToScene(1);
+    document.getElementById("intro").style.display = "none";
+    scenes[0].classList.add("active");
+    playScene(0);
+  }
+
+  function playScene(index) {
+    const scene = scenes[index];
+    const video = scene.querySelector("video");
+    scene.classList.add("active");
+    const content = scene.querySelector(".scene-content");
+    video.play();
+    setTimeout(()=>content.classList.add("visible"),1000);
+    video.onended = ()=> {
+      content.classList.remove("visible");
+      scene.classList.remove("active");
+      if (index < scenes.length-1) playScene(index+1);
+      else showForm();
     }
-    showText(first);
   }
-
-  function showText(scene) {
-    const content = scene.querySelector('.scene-content');
-    if (content) setTimeout(() => content.classList.add('visible'), 800);
-  }
-
-  document.getElementById('presentation-container').addEventListener('click', () => {
-    if (currentSceneIndex === scenes.length - 1) showForm();
-    else transitionToScene(currentSceneIndex + 1);
-  });
 
   function showForm() {
-    formContainer.style.display = 'flex';
-    renderQuestion();
+    formContainer.style.display = "flex";
+    renderQuestion(0);
   }
 
-  function renderQuestion() {
-    questionsWrapper.innerHTML = '';
-    if (currentQuestionIndex >= questions.length) return showThankYou();
-    const q = questions[currentQuestionIndex];
-    const card = document.createElement('div');
-    card.className = 'question-card active';
-    card.innerHTML = `<h2>${q.text}</h2><div class="answers">${q.answers.map(a=>`<button class='answer-btn' data-key='${q.key}' data-value='${a}'>${a}</button>`).join('')}</div>`;
-    questionsWrapper.appendChild(card);
-    document.querySelectorAll('.answer-btn').forEach(btn => btn.addEventListener('click', handleAnswer));
+  function renderQuestion(i){
+    questionsWrapper.innerHTML="";
+    if(i>=questions.length){return showThanks();}
+    const q=questions[i];
+    const div=document.createElement("div");
+    div.className="question-card active";
+    div.innerHTML=`<h2>${q.text}</h2><div class='answers'>${q.answers.map(a=>`<button class='answer-btn' data-k='${q.key}' data-v='${a}'>${a}</button>`).join("")}</div>`;
+    questionsWrapper.appendChild(div);
+    document.querySelectorAll(".answer-btn").forEach(b=>b.onclick=(e)=>handleAnswer(e,i));
   }
 
-  async function handleAnswer(e) {
-    const key = e.target.dataset.key, value = e.target.dataset.value;
-    try {
-      const res = await fetch(backendURL, {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({sessionId, key, value})
+  async function handleAnswer(e,i){
+    const key=e.target.dataset.k;
+    const value=e.target.dataset.v;
+    try{
+      await fetch("https://srm-backend-qk-lwid.onrender.com/api/responder",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({sessionId,key,value})
       });
-      if (!res.ok) throw new Error("Error al guardar respuesta");
-      console.log(`✅ Guardado: ${key} → ${value}`);
-      currentQuestionIndex++;
-      updateProgress();
-      renderQuestion();
-    } catch(err) {
-      console.error("❌ Error al conectar:", err);
-      alert("No se pudo registrar la respuesta. Intente nuevamente.");
+      progressBar.style.width=((i+1)/questions.length*100)+"%";
+      renderQuestion(i+1);
+    }catch(err){
+      console.error("Error al guardar:",err);
     }
   }
 
-  function updateProgress() {
-    progressBar.style.width = `${(currentQuestionIndex / questions.length) * 100}%`;
+  function showThanks(){
+    questionsWrapper.innerHTML=`<div class='question-card active' style='text-align:center;'><h1>Gracias. Hemos recibido su diagnóstico.</h1><p>En las próximas 48h recibirá su hoja de ruta personalizada. Prepárese para acelerar.</p></div>`;
+    progressBar.style.width="100%";
   }
 
-  function showThankYou() {
-    questionsWrapper.innerHTML = `
-      <div class="question-card active" style="text-align:center;">
-        <h1>Gracias. Hemos recibido su diagnóstico.</h1>
-        <p>El equipo estratégico personalizará su Plan Piloto en las próximas 48 horas.</p>
-      </div>`;
-    progressBar.style.width = '100%';
-  }
+  startBtn.addEventListener("click", startPresentation);
 });
-// 🧭 Registro del Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
+</script>
+
+<!-- 🧭 Service Worker -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
     navigator.serviceWorker.register('/srm-frontend-qk/service-worker-lite.js')
-      .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
-      .catch(err => console.error('❌ Error al registrar Service Worker:', err));
+      .then(r=>console.log('✅ Service Worker activo:',r.scope))
+      .catch(e=>console.error('❌ SW error:',e));
   });
 }
 </script>

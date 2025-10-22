@@ -13,14 +13,14 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest" />
 
-  <!-- ✅ OpenGraph / Meta -->
+  <!-- ✅ OpenGraph -->
   <meta property="og:title" content="SRM-QK | Somos Repuestos Motos" />
   <meta property="og:description" content="Explora la presentación digital de SRM-QK: visión, estrategia y crecimiento." />
   <meta property="og:image" content="https://somosrepuestosmotos-coder.github.io/srm-frontend-qk/og-image-srmqk.png" />
   <meta property="og:url" content="https://somosrepuestosmotos-coder.github.io/srm-frontend-qk/" />
   <meta property="og:type" content="website" />
 
-  <!-- ✅ Twitter Card -->
+  <!-- ✅ Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SRM-QK | Somos Repuestos Motos" />
   <meta name="twitter:description" content="Explora la presentación digital de SRM-QK: visión, estrategia y crecimiento." />
@@ -34,10 +34,10 @@
       font-family: "Poppins", sans-serif;
       overflow: hidden;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      flex-direction: column;
     }
 
     video {
@@ -53,6 +53,7 @@
       text-align: center;
       background: rgba(0, 0, 0, 0.85);
       border-radius: 10px;
+      max-width: 90%;
     }
 
     button {
@@ -73,7 +74,7 @@
 
     #startBtn {
       position: absolute;
-      z-index: 2;
+      z-index: 10;
       padding: 14px 28px;
       background: #ff6600;
       border: none;
@@ -94,16 +95,16 @@
 
     <div class="question" data-question="main_objective_6m">
       <p>¿Cuál es tu principal objetivo en los próximos 6 meses?</p>
-      <button>Mejorar la rentabilidad</button>
       <button>Aumentar ventas B2B</button>
       <button>Expandir a nuevos regiones</button>
+      <button>Mejorar la rentabilidad</button>
     </div>
 
     <div class="question" data-question="biggest_challenge">
       <p>¿Cuál es tu mayor desafío actual?</p>
       <button>Logística y entregas</button>
-      <button>Digitalización de procesos</button>
       <button>Fidelización de clientes</button>
+      <button>Digitalización de procesos</button>
     </div>
 
     <div class="question" data-question="investment_priority">
@@ -139,28 +140,26 @@
       ];
 
       let currentVideo = 0;
-      let sessionId = "session_" + Date.now() + "_" + Math.random().toString(36).substring(2, 10);
+      const sessionId = "session_" + Date.now() + "_" + Math.random().toString(36).substring(2, 10);
 
       const playVideo = (index) => {
         if (index >= videos.length) {
           videoPlayer.style.display = "none";
           questionnaire.style.display = "block";
+          document.querySelector(".question").style.display = "block";
           return;
         }
-
         videoPlayer.src = videos[index];
         videoPlayer.load();
         videoPlayer.play().catch(() => {});
-        console.log("🎥 Reproduciendo video", index + 1, videos[index]);
+        console.log("▶️ Reproduciendo video:", index + 1);
       };
 
-      // ✅ Avanzar al siguiente video solo con 'ended'
       videoPlayer.addEventListener("ended", () => {
         currentVideo++;
         playVideo(currentVideo);
       });
 
-      // ✅ Iniciar desde el primer video manualmente
       startBtn.addEventListener("click", () => {
         startBtn.style.display = "none";
         videoPlayer.style.display = "block";
@@ -168,7 +167,6 @@
         playVideo(currentVideo);
       });
 
-      // ✅ Guardar respuestas
       document.querySelectorAll(".question button").forEach((btn) => {
         btn.addEventListener("click", async (e) => {
           const questionDiv = e.target.closest(".question");
@@ -202,9 +200,6 @@
           }
         });
       });
-
-      // Mostrar la primera pregunta al final
-      document.querySelector(".question").style.display = "block";
     });
   </script>
 </body>

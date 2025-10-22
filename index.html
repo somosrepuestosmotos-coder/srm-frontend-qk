@@ -13,7 +13,7 @@
 <link rel="shortcut icon" href="favicon.ico">
 <meta name="theme-color" content="#0A2F7B">
 
-<!-- 🔹 SEO y Open Graph -->
+<!-- 🔹 SEO y Social -->
 <meta name="description" content="Propuesta estratégica digital para Somos Repuestos Motos: innovación, branding y crecimiento comercial con visión tecnológica.">
 <meta property="og:title" content="Suite Ejecutiva Digital - Somos Repuestos Motos">
 <meta property="og:description" content="Estrategia, tecnología y visión: el futuro digital de Somos Repuestos Motos.">
@@ -30,7 +30,7 @@
 <link rel="preconnect" href="https://www.youtube.com">
 <link rel="preconnect" href="https://i.ytimg.com">
 
-<!-- 🔹 YouTube API -->
+<!-- 🔹 YouTube API diferida -->
 <script defer src="https://www.youtube.com/iframe_api"></script>
 
 <style>
@@ -40,9 +40,11 @@
   --text-color: #FFFFFF;
 }
 
+/* === Reset y base === */
 html, body {
-  margin: 0; padding: 0; width: 100%; height: 100%;
-  overflow: hidden; background-color: #000;
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  overflow: hidden; background: #000;
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
   color: var(--text-color);
   cursor: pointer;
@@ -54,12 +56,9 @@ html, body {
 
 /* === Escenas === */
 .scene {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
   text-align: center;
   opacity: 0;
   transition: opacity 1.8s ease-in-out;
@@ -68,46 +67,43 @@ html, body {
 
 /* === Videos === */
 .video-wrapper {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   z-index: -2;
   background: #000;
   overflow: hidden;
 }
 .scene-video {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  pointer-events: auto;
   height: 100vh;
-  width: 177.77vh;
+  width: 177.77vh; /* relación 16:9 */
 }
 @media (min-aspect-ratio: 16/9) {
   .scene-video { width: 100vw; height: 56.25vw; }
 }
-.scene-video > iframe { width: 100%; height: 100%; border: none; }
+.scene-video > iframe {
+  width: 100%; height: 100%;
+  border: none;
+  pointer-events: none;
+}
 
+/* === Overlay === */
 .scene-overlay {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.35));
   z-index: -1;
 }
 
-/* === Contenido === */
+/* === Texto === */
 .scene-content {
-  position: relative;
-  z-index: 1;
-  opacity: 0;
-  transform: translateY(25px);
+  position: relative; z-index: 1;
+  opacity: 0; transform: translateY(25px);
   transition: opacity 1.4s ease-out, transform 1.4s ease-out;
-  padding: 2rem;
-  box-sizing: border-box;
+  padding: 2rem; box-sizing: border-box;
 }
 .scene.active .scene-content.visible {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1; transform: translateY(0);
 }
 .scene h1 {
   font-size: 3.8vw;
@@ -125,11 +121,9 @@ html, body {
   margin: 0 auto;
 }
 
-/* === Prompt === */
+/* === Prompt inicial === */
 #start-prompt {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
+  position: absolute; bottom: 10%; left: 50%;
   transform: translateX(-50%);
   z-index: 10;
   font-size: 1.2vw;
@@ -145,15 +139,14 @@ html, body {
 #start-prompt.visible { opacity: 1; }
 #start-prompt.hidden { opacity: 0; display: none; }
 @keyframes pulse {
-  from { background-color: rgba(0,182,200,0.1); }
-  to { background-color: rgba(0,182,200,0.3); }
+  from { background: rgba(0,182,200,0.1); }
+  to { background: rgba(0,182,200,0.3); }
 }
 
 /* === Formulario === */
 #form-container {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0,0,0,0.8);
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.8);
   z-index: 100;
   display: none;
   justify-content: center;
@@ -162,45 +155,40 @@ html, body {
 }
 .form-content { width: 90%; max-width: 800px; }
 .question-card {
-  background-color: #2c2c2c;
+  background: #2c2c2c;
   padding: 40px;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   display: none;
 }
 .question-card.active { display: block; animation: fadeIn 0.5s forwards; }
-@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
 #progress-bar-container {
-  width: 100%;
-  background-color: #444;
-  border-radius: 5px;
-  overflow: hidden;
+  width: 100%; background: #444;
+  border-radius: 5px; overflow: hidden;
   margin-bottom: 30px;
 }
 #progress-bar {
-  width: 0%;
-  height: 10px;
-  background-color: var(--secondary-color);
+  width: 0%; height: 10px;
+  background: var(--secondary-color);
   transition: width 0.4s ease-out;
 }
 .answers {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
 }
 .answer-btn {
-  background-color: #3e3e3e;
+  background: #3e3e3e;
   color: var(--text-color);
   border: 1px solid #555;
   padding: 15px 20px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background 0.3s, transform 0.2s;
 }
 .answer-btn:hover {
-  background-color: var(--secondary-color);
+  background: var(--secondary-color);
   transform: translateY(-3px);
 }
 
@@ -230,7 +218,7 @@ html, body {
   <div class="scene" id="scene-3"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-3" class="scene-video"></div></div><div class="scene-content"><h1>Visualizamos su marca, no como es, sino como debería ser.</h1><p>Una identidad visual que comunica potencia, confianza y liderazgo tecnológico en cada punto de contacto.</p></div></div>
   <div class="scene" id="scene-4"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-4" class="scene-video"></div></div><div class="scene-content"><h1>Una marca que cobra vida en el mundo real.</h1><p>Desde la primera tarjeta de presentación hasta el empaque de cada producto, su nueva identidad proyecta calidad y confianza.</p></div></div>
   <div class="scene" id="scene-5"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-5" class="scene-video"></div></div><div class="scene-content"><h1>Más que una nueva imagen, un sistema diseñado para crecer.</h1><p>Hemos estructurado una estrategia completa que transforma su experiencia en un motor de ventas predecible y automatizado.</p></div></div>
-  <div class="scene" id="scene-6"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-6" class="scene-video"></div></div><div class="scene-content"><h1>Hemos construido el 90% del camino. El 10% final lo diseñamos juntos.</h1><p>Esta visión estratégica necesita ser ajustada a sus objetivos específicos. Su conocimiento es la pieza clave para personalizar el Plan Piloto.</p></div></div>
+  <div class="scene" id="scene-6"><div class="scene-overlay"></div><div class="video-wrapper"><div id="video-6" class="scene-video"></div></div><div class="scene-content"><h1>Hemos construido el 90% del camino. El 10% final lo diseñamos juntos.</h1><p>Esta visión estratégica necesita ser ajustada a sus objetivos específicos. Su conocimiento es la pieza clave para personalizar su Plan Piloto.</p></div></div>
 </main>
 
 <div id="form-container">
@@ -250,7 +238,8 @@ const questions=[
 {key:'main_objective_6m',text:'¿Cuál es su objetivo principal para los próximos 6 meses?',answers:['Aumentar ventas B2B','Expandir a nuevas regiones','Mejorar la rentabilidad','Fortalecer la marca']},
 {key:'biggest_challenge',text:'¿Cuál considera su mayor desafío actualmente?',answers:['Competencia de precios','Logística y entregas','Fidelización de clientes','Digitalización de procesos']},
 {key:'investment_priority',text:'¿En qué área priorizaría la inversión?',answers:['Marketing y Publicidad','Tecnología (E-commerce, CRM)','Inventario y Stock','Capacitación de equipo']},
-{key:'start_timeline',text:'¿Cuál es su cronograma ideal para iniciar este plan piloto?',answers:['Inmediatamente','En el próximo mes','En el próximo trimestre','Aún por definir']}];
+{key:'start_timeline',text:'¿Cuál es su cronograma ideal para iniciar este plan piloto?',answers:['Inmediatamente','En el próximo mes','En el próximo trimestre','Aún por definir']}
+];
 
 function onYouTubeIframeAPIReady(){
   scenes=[...document.querySelectorAll('.scene')];
@@ -261,7 +250,7 @@ function onYouTubeIframeAPIReady(){
 
   videoIDs.forEach((id,i)=>players[i]=new YT.Player(`video-${i+1}`,{
     videoId:id,
-    playerVars:{autoplay:0,mute:1,controls:0,rel:0,loop:0,playsinline:1,modestbranding:1,origin:window.location.origin},
+    playerVars:{autoplay:0,mute:1,controls:0,rel:0,playsinline:1,modestbranding:1,origin:window.location.origin},
     events:{'onReady':onPlayerReady,'onStateChange':onPlayerStateChange}
   }));
 
@@ -271,61 +260,40 @@ function onYouTubeIframeAPIReady(){
   });
 }
 
-function onPlayerReady(e){
-  if(players[0]&&e.target.getIframe().id===players[0].getIframe().id){
-    showTextForScene(scenes[0]);
-    startPrompt.classList.add('visible');
-  }
-}
+function onPlayerReady(e){if(players[0]&&e.target.getIframe().id===players[0].getIframe().id){showTextForScene(scenes[0]);startPrompt.classList.add('visible');}}
+function onPlayerStateChange(e){if(e.data===YT.PlayerState.ENDED&&e.target.getIframe().id===players[currentSceneIndex].getIframe().id){currentSceneIndex<scenes.length-1?transitionToScene(currentSceneIndex+1):showForm();}}
 
-function onPlayerStateChange(e){
-  if(e.data===YT.PlayerState.ENDED && players[currentSceneIndex] && e.target.getIframe().id===players[currentSceneIndex].getIframe().id){
-    currentSceneIndex<scenes.length-1?transitionToScene(currentSceneIndex+1):showForm();
-  }
-}
-
-function showTextForScene(scene){
-  const c=scene.querySelector('.scene-content');
-  if(c) setTimeout(()=>c.classList.add('visible'),1000);
-}
+function showTextForScene(s){const c=s.querySelector('.scene-content');if(c)setTimeout(()=>c.classList.add('visible'),1000);}
 function hideAllTexts(){scenes.forEach(s=>s.querySelector('.scene-content')?.classList.remove('visible'));}
-function transitionToScene(next){
-  if(next>=scenes.length||!scenes[next]) return;
-  hideAllTexts();
-  scenes[currentSceneIndex].classList.remove('active');
-  players[currentSceneIndex]?.stopVideo();
-  scenes[next].classList.add('active');
-  players[next]?.seekTo(0);
-  players[next]?.playVideo();
-  currentSceneIndex=next;
-  showTextForScene(scenes[next]);
-}
+function transitionToScene(n){if(n>=scenes.length)return;hideAllTexts();scenes[currentSceneIndex].classList.remove('active');players[currentSceneIndex]?.stopVideo();scenes[n].classList.add('active');players[n]?.seekTo(0);players[n]?.playVideo();currentSceneIndex=n;showTextForScene(scenes[n]);}
 function startPresentation(){hideAllTexts();players[0]?.playVideo();showTextForScene(scenes[0]);}
 function showForm(){formContainer.style.display='flex';players[currentSceneIndex]?.pauseVideo();renderQuestion();}
-function renderQuestion(){
-  questionsWrapper.innerHTML='';
-  if(currentQuestionIndex>=questions.length) return showThankYou();
-  const q=questions[currentQuestionIndex];
-  const c=document.createElement('div');
-  c.className='question-card active';
-  c.innerHTML=`<h2>${q.text}</h2><div class="answers">${q.answers.map(a=>`<button class='answer-btn' data-key='${q.key}' data-value='${a}'>${a}</button>`).join('')}</div>`;
-  questionsWrapper.appendChild(c);
-  document.querySelectorAll('.answer-btn').forEach(b=>b.addEventListener('click',handleAnswer));
-}
+
+function renderQuestion(){questionsWrapper.innerHTML='';if(currentQuestionIndex>=questions.length)return showThankYou();
+const q=questions[currentQuestionIndex];
+const c=document.createElement('div');
+c.className='question-card active';
+c.innerHTML=`<h2>${q.text}</h2><div class="answers">${q.answers.map(a=>`<button class='answer-btn' data-key='${q.key}' data-value='${a}'>${a}</button>`).join('')}</div>`;
+questionsWrapper.appendChild(c);
+document.querySelectorAll('.answer-btn').forEach(b=>b.addEventListener('click',handleAnswer));}
+
 async function handleAnswer(e){
   const key=e.target.dataset.key,value=e.target.dataset.value;
-  const baseURL=(window.location.hostname.includes('localhost')||window.location.hostname.includes('127.0.0.1'))
-    ?'http://localhost:10000/api/responder'
-    :'https://srm-backend-qk-lwid.onrender.com/api/responder';
+  const baseURL=(window.location.hostname.includes("localhost")||window.location.hostname.includes("127.0.0.1"))
+    ?"http://localhost:10000/api/responder"
+    :"https://srm-backend-qk-lwid.onrender.com/api/responder";
   try{
-    const res=await fetch(baseURL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId,key,value})});
-    if(!res.ok) throw new Error('Error al enviar datos');
+    const r=await fetch(baseURL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sessionId,key,value})});
+    if(!r.ok)throw new Error("Error al enviar datos");
     currentQuestionIndex++;updateProgressBar();renderQuestion();
-  }catch(err){alert('No se pudo registrar la respuesta. Intente nuevamente.');}
+  }catch(err){alert("No se pudo registrar la respuesta. Intente nuevamente.");}
 }
+
 function updateProgressBar(){progressBar.style.width=`${(currentQuestionIndex/questions.length)*100}%`;}
 function showThankYou(){
-  questionsWrapper.innerHTML=`<div class='question-card active' style='text-align:center;'><h1>Gracias. Hemos recibido su diagnóstico.</h1><p style='font-size:1.2rem;'>Nuestro equipo de estrategia ya está utilizando sus respuestas para personalizar su Plan Piloto. Recibirá su hoja de ruta en las próximas 48 horas.</p></div>`;
+  questionsWrapper.innerHTML=`<div class='question-card active' style='text-align:center;'>
+  <h1>Gracias. Hemos recibido su diagnóstico.</h1>
+  <p style='font-size:1.2rem;'>Nuestro equipo ya está utilizando sus respuestas para personalizar su Plan Piloto. Recibirá su hoja de ruta en las próximas 48 horas.</p></div>`;
   progressBar.style.width='100%';
 }
 </script>

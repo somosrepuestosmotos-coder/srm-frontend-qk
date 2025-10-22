@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Presentación estratégica interactiva de Somos Repuestos Motos. Innovación, identidad y expansión digital." />
 <meta name="twitter:image" content="https://somosrepuestosmotos-coder.github.io/srm-frontend-qk/og-image-srmqk.png" />
 
-<!-- ✅ Cache control para móviles -->
+<!-- ✅ Cache control -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -188,7 +188,6 @@ body, html {
 
 <body>
 <main id="presentation-container">
-  <!-- Escenas -->
   <div class="scene active" id="scene-1">
     <div class="scene-overlay"></div>
     <video class="scene-video" autoplay muted playsinline preload="auto">
@@ -355,6 +354,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     startPresentation();
+
+    // --- FIX PARA MOVIL: desbloquear autoplay al primer toque ---
+    function enableMobileAutoplay() {
+      const videos = document.querySelectorAll('.scene-video');
+      videos.forEach(v => {
+        v.muted = true;
+        v.playsInline = true;
+        v.play().catch(() => {});
+      });
+      document.removeEventListener('touchstart', enableMobileAutoplay);
+      document.removeEventListener('click', enableMobileAutoplay);
+    }
+    document.addEventListener('touchstart', enableMobileAutoplay, { once: true });
+    document.addEventListener('click', enableMobileAutoplay, { once: true });
 });
 </script>
 

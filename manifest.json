@@ -1,0 +1,22 @@
+{
+  "name": "Panel SRM-QK",
+  "short_name": "SRM-QK",
+  "description": "Panel de diagnóstico ejecutivo - Suite Repuestos Motos",
+  "start_url": "dashboard.html",
+  "display": "standalone",
+  "background_color": "#0A2F7B",
+  "theme_color": "#0A2F7B",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -57,17 +57,7 @@ html, body {
   object-fit: cover; z-index: -2;
   background-color: #000;
   filter: brightness(0.9) contrast(1.05);
-  transition: transform 0.4s ease; /* transición suave */
 }
-
-/* 🔧 AJUSTE: reducir ampliación del video en móviles */
-@media (max-width: 768px) {
-  .scene-video {
-    object-position: center center;
-    transform: scale(0.88); /* reducción del zoom */
-  }
-}
-
 .scene-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.35));
@@ -150,16 +140,137 @@ html, body {
 }
 .answer-btn:hover { background: var(--secondary-color); transform: translateY(-3px); }
 
+/* 🔧 Ajuste visual solo para móviles */
 @media (max-width:768px){
   .scene h1{font-size:6vw;}
   .scene p{font-size:3.5vw;max-width:90%;}
   .answers{grid-template-columns:1fr;}
   #start-button { font-size: 1.2rem; padding: 0.8rem 1.5rem;}
+  .scene-video {
+    object-fit: contain !important;
+    transform: scale(1.05);
+    background-color: #000;
+  }
 }
 </style>
 </head>
+
 <body>
-<!-- El resto del HTML (videos, escenas y scripts) permanece igual -->
-<!-- ... -->
+<button id="start-button" aria-label="Iniciar presentación">Iniciar Presentación</button>
+
+<main id="presentation-container">
+  <div class="scene active"><div class="scene-overlay"></div><video class="scene-video" preload="auto" muted playsinline><source src="https://res.cloudinary.com/dcgrzahms/video/upload/v1761163617/animacion-logo-qk-original_qbhllw.mp4" type="video/mp4"></video><div class="scene-content"><h1>Comenzamos por entender el corazón de su negocio.</h1><p>Analizamos su situación actual, su catálogo y su posición en el mercado. Vimos la base de un líder.</p></div></div>
+  <div class="scene"><div class="scene-overlay"></div><video class="scene-video" preload="auto" muted playsinline><source src="https://res.cloudinary.com/dcgrzahms/video/upload/v1761167443/animacion-insight-mercado_cj2bjx.mp4" type="video/mp4"></video><div class="scene-content"><h1>Descubrimos una oportunidad que sus competidores no ven.</h1><p>Su verdadero potencial está en construir una marca que inspire confianza inmediata en el entorno digital.</p></div></div>
+  <div class="scene"><div class="scene-overlay"></div><video class="scene-video" preload="auto" muted playsinline><source src="https://res.cloudinary.com/dcgrzahms/video/upload/v1761167449/animacion-nuevo-logo-3d_ldgmxk.mp4" type="video/mp4"></video><div class="scene-content"><h1>Visualizamos su marca, no como es, sino como debería ser.</h1><p>Una identidad visual que comunica potencia, confianza y liderazgo tecnológico.</p></div></div>
+  <div class="scene"><div class="scene-overlay"></div><video class="scene-video" preload="auto" muted playsinline><source src="https://res.cloudinary.com/dcgrzahms/video/upload/v1761167445/animacion-papeleria-merchandising-packaging_trfy2l.mp4" type="video/mp4"></video><div class="scene-content"><h1>Una marca que cobra vida en el mundo real.</h1><p>Desde la primera tarjeta hasta el empaque, su nueva identidad proyecta calidad y coherencia.</p></div></div>
+  <div class="scene"><div class="scene-overlay"></div><video class="scene-video" preload="auto" muted playsinline><source src="https://res.cloudinary.com/dcgrzahms/video/upload/v1761167446/Animaci%C3%B3n_de_Ecosistema_de_Adquisici%C3%B3n_Inteligente_f2tla5.mp4" type="video/mp4"></video><div class="scene-content"><h1>Más que una imagen, un sistema diseñado para crecer.</h1><p>Una estrategia integral que convierte su operación en un motor digital escalable.</p></div></div>
+  <div class="scene"><div class="scene-overlay"></div><video class="scene-video" preload="auto" muted playsinline><source src="https://res.cloudinary.com/dcgrzahms/video/upload/v1761167468/animacion-ecosistema-digital_kma2vo.mp4" type="video/mp4"></video><div class="scene-content"><h1>Integramos herramientas que trabajan en conjunto.</h1><p>CRM, marketing, automatización y análisis: todo conectado en una sola suite digital.</p></div></div>
+  <div class="scene"><div class="scene-overlay"></div><video class="scene-video" preload="auto" muted playsinline><source src="https://res.cloudinary.com/dcgrzahms/video/upload/v1761167292/animacion-srm-qk-k_fw8r1i.mp4" type="video/mp4"></video><div class="scene-content"><h1>El futuro digital de Somos Repuestos Motos ya está en marcha.</h1><p>Construimos las bases para liderar el sector con visión, coherencia y tecnología.</p></div></div>
+  <div class="scene"><div class="scene-overlay"></div><video class="scene-video" preload="auto" muted playsinline><source src="https://res.cloudinary.com/dcgrzahms/video/upload/v1761167998/Animaci%C3%B3n_de_Logo_Corporativo_Minimalista_wke7lj.mp4" type="video/mp4"></video><div class="scene-content"><h1>Hemos recorrido el 90% del camino.</h1><p>El 10% restante lo diseñamos juntos, adaptando esta visión a sus objetivos estratégicos.</p></div></div>
+</main>
+
+<div id="form-container">
+  <div class="form-content">
+    <div id="progress-bar-container"><div id="progress-bar"></div></div>
+    <div id="questions-wrapper"></div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const startButton = document.getElementById('start-button');
+  const scenes = [...document.querySelectorAll('.scene')];
+  const formContainer = document.getElementById('form-container');
+  const questionsWrapper = document.getElementById('questions-wrapper');
+  const progressBar = document.getElementById('progress-bar');
+  const backendURL = location.hostname.includes('localhost')
+    ? 'http://localhost:10000/api/responder'
+    : 'https://srm-backend-qk-lwid.onrender.com/api/responder';
+  const sessionId = `session_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+  let currentScene = 0, currentQuestion = 0, started = false;
+
+  const questions = [
+    {key:'main_objective_6m',text:'¿Cuál es su objetivo principal para los próximos 6 meses?',answers:['Aumentar ventas B2B','Expandir a nuevas regiones','Mejorar la rentabilidad','Fortalecer la marca']},
+    {key:'biggest_challenge',text:'¿Cuál considera su mayor desafío actualmente?',answers:['Competencia de precios','Logística y entregas','Fidelización de clientes','Digitalización de procesos']},
+    {key:'investment_priority',text:'¿En qué área priorizaría la inversión?',answers:['Marketing y Publicidad','Tecnología (E-commerce, CRM)','Inventario y Stock','Capacitación de equipo']},
+    {key:'start_timeline',text:'¿Cuál es su cronograma ideal para iniciar este plan piloto?',answers:['Inmediatamente','En el próximo mes','En el próximo trimestre','Aún por definir']}
+  ];
+
+  startButton.addEventListener('click', e => {
+    e.stopPropagation();
+    if (!started) {
+      started = true;
+      startButton.style.display = 'none';
+      playScene(0);
+    }
+  });
+
+  function playScene(i) {
+    if (i >= scenes.length) return showForm();
+    scenes.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    const scene = scenes[i];
+    const vid = scene.querySelector('video');
+    const content = scene.querySelector('.scene-content');
+    if (vid) {
+      vid.pause();
+      vid.currentTime = 0;
+      vid.play().catch(err => console.warn('Autoplay bloqueado:', err.name));
+      vid.onended = () => setTimeout(() => playScene(i + 1), 400);
+    }
+    showText(content);
+    currentScene = i;
+  }
+
+  document.getElementById('presentation-container').addEventListener('click', e => {
+    if (!started || e.target.classList.contains('answer-btn')) return;
+    const vid = scenes[currentScene].querySelector('video');
+    if (vid) { vid.pause(); vid.onended = null; }
+    playScene(currentScene + 1);
+  });
+
+  function showText(content) {
+    if (!content) return;
+    content.classList.remove('visible');
+    void content.offsetWidth;
+    setTimeout(() => content.classList.add('visible'), 500);
+  }
+
+  function showForm() {
+    formContainer.style.display = 'flex';
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    questionsWrapper.innerHTML = '';
+    if (currentQuestion >= questions.length) return showThankYou();
+    const q = questions[currentQuestion];
+    const card = document.createElement('div');
+    card.className = 'question-card active';
+    card.innerHTML = `<h2>${q.text}</h2><div class="answers">${q.answers.map(a=>`<button class="answer-btn" data-key="${q.key}" data-value="${a}">${a}</button>`).join('')}</div>`;
+    questionsWrapper.appendChild(card);
+    document.querySelectorAll('.answer-btn').forEach(b=>b.addEventListener('click',handleAnswer));
+  }
+
+  async function handleAnswer(e){
+    const key = e.target.dataset.key, value = e.target.dataset.value;
+    e.target.disabled = true;
+    try {
+      const res = await fetch(backendURL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId,key,value})});
+      if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
+      currentQuestion++;
+      progressBar.style.width = `${(currentQuestion/questions.length)*100}%`;
+      renderQuestion();
+    } catch(err){
+      console.error('Error al guardar:',err);
+      alert('No se pudo registrar la respuesta. Intente nuevamente.');
+    }
+  }
+
+  function showThankYou(){
+    questionsWrapper.innerHTML = `<div class="question-card active" style="text-align:center;"><h1>Gracias. Hemos recibido su diagnóstico.</h1><p style="font-size:1.2rem;">Nuestro equipo ya está utilizando sus respuestas para personalizar su Plan Piloto. Recibirá su hoja de ruta en las próximas 48 horas.</p></div>`;
+    progressBar.style.width = '100%';
+  }
+});
+</script>
 </body>
 </html>
